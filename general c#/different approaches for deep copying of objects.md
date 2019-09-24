@@ -37,7 +37,7 @@ public static T cloneObject<T>(T original, List<string> propertyExcludeList)
 			{
 				if (pi.GetValue(copy, null) != pi.GetValue(original, null))
 				{
-					pi.SetValue(copy, pi.GetValue(original, null), null);
+				    pi.SetValue(copy, pi.GetValue(original, null), null);
 				}
 			}
 		}
