@@ -1,9 +1,9 @@
 # The Startup class
 
-Date: 17.09.2019 
+Date: 17.09.2019  
 [Original article](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.2)  
 
-.NET Core 2.x version of framework
+.NET Core 2.x version of framework  
 
 Class where:  
 
@@ -32,9 +32,9 @@ public class Startup
 
 From the very beginning there are available the following classes throught dependency injection.  
 
-- [IHostingEnvironment](https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.ihostingenvironment) to configure services by environment.  
-- [IConfiguration](https://docs.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration) to read configuration.  
-- [ILoggerFactory](https://docs.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory) to create a logger in `Startup.ConfigureServices`.
+-   [IHostingEnvironment](https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.ihostingenvironment) to configure services by environment.  
+-   [IConfiguration](https://docs.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration) to read configuration.  
+-   [ILoggerFactory](https://docs.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory) to create a logger in `Startup.ConfigureServices`.
 
 ```C#
 public class Startup
@@ -62,7 +62,6 @@ Can be used names, specific for environments:
 - etc
 
 ## The ConfigureServices method
-
 For features that require substantial setup, there are `Add{Service}` extension methods on [IServiceCollection](https://docs.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection). For example, **Add**DbContext, **Add**DefaultIdentity, **Add**EntityFrameworkStores, and **Add**RazorPages
 
 ```C#
@@ -78,11 +77,9 @@ public void ConfigureServices(IServiceCollection services)
     services.AddTransient<OperationService, OperationService>();
 }
 ```
-
 [Service lifetimes](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2#service-lifetimes) are described later in this topic.
 
 ## The Configure method
-
 The [Configure](https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.hosting.startupbase.configure) method is used to specify how the app responds to HTTP requests. The request pipeline is configured by adding [middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/index?view=aspnetcore-2.2) components to an [IApplicationBuilder](https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder) instance.
 
 ```C#
@@ -93,7 +90,6 @@ public void Configure(IApplicationBuilder app)
 ```
 
 ## Configure services without Startup
-
 ```C#
 public class Program
 {
@@ -118,5 +114,4 @@ public class Program
 ```
 
 ## Extend Startup with startup filters
-
 See [section](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.2#extend-startup-with-startup-filters) in Microsoft documentation
