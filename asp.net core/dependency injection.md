@@ -1,9 +1,13 @@
 # Dependency injection
 
 Date: 17.09.2019 
-[Original article](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2)
+[Original article](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2)  
 
-.NET Core 2.x version of framework
+Version: .NET Core 2.x  
+
+## Content
+
+[TOC]  
 
 Dependency injection addresses these problems through:
 
