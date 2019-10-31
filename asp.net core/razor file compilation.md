@@ -8,3 +8,6 @@ Date: 31.10.2019
 ## Runtime compilation
 - Install the `Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation` NuGet package.
 - Update the project's `Startup.ConfigureServices` method to include a call to `AddRazorRuntimeCompilation`
+``` csharp
+services.AddControllersWithViews().AddRazorRuntimeCompilation();
+```
