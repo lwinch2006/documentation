@@ -76,6 +76,14 @@
     ADD CreatedOnUtc DATETIME;
 ```
 
+## Change table - add columns with defaul values
+``` sql
+    ALTER TABLE {TABLENAME} 
+    ADD {COLUMNNAME} {TYPE} {NULL|NOT NULL} 
+    CONSTRAINT {CONSTRAINT_NAME} DEFAULT {DEFAULT_VALUE}
+    WITH VALUES
+```
+
 ## Dynamic script execution
 ``` sql
     SET @newReason = 'Call'
