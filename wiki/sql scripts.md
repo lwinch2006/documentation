@@ -70,6 +70,12 @@
     GO
 ```
 
+## Change table - add columns
+``` sql
+    ALTER TABLE [Tenants]
+    ADD CreatedOnUtc DATETIME;
+```
+
 ## Dynamic script execution
 ``` sql
     SET @newReason = 'Call'
