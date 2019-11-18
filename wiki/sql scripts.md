@@ -144,7 +144,6 @@
             ROLLBACK TRANSACTION;
         END; 
     END CATCH;
-    GO
 ```
 
 ## Template for each SQL script (with re-throw of exception)
@@ -178,7 +177,6 @@
         SELECT @ErrorMessage = ERROR_MESSAGE() + ' Line ' + cast(ERROR_LINE() as nvarchar(5)), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);          
     END CATCH;
-    GO
 ```
 
 
