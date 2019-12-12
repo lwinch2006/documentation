@@ -8,10 +8,13 @@ Date: 12.12.2019
 ![architecture](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity-custom-storage-providers/_static/identity-architecture-diagram.png?view=aspnetcore-3.0)
 
 ## Model classes
-* [IdentityUser]()
-* [Claim](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=netcore-3.0)
-* [IdentityUserLogin](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnet.identity.corecompat.identityuserlogin?view=aspnetcore-2.0)
-* [IdentityRole](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnet.identity.corecompat.identityrole?view=aspnetcore-2.0)
+* [IdentityUser](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuser?view=aspnetcore-3.0)
+* [IdentityRole](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityrole?view=aspnetcore-3.0)
+* [IdentityUserClaim](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserclaim-1?view=aspnetcore-3.0)
+* [IdentityUserToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityusertoken-1?view=aspnetcore-3.0)
+* [IdentityUserLogin](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserlogin-1?view=aspnetcore-3.0)
+* [IdentityRoleClaim](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityroleclaim-1?view=aspnetcore-3.0)
+* [IdentityUserRole](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserrole-1?view=aspnetcore-3.0)
 
 ## Store interfaces (aka service layer)
 * [IUserStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserstore-1?view=aspnetcore-3.0)
@@ -22,6 +25,21 @@ Date: 12.12.2019
 
 ## When customizing Identity
 * Customize the user class
+  ``` csharp
+      public class ApplicationUser : IdentityUser<Guid>
+      {
+          public string CustomTag { get; set; }
+      }  
+  ```
+  ``` csharp
+  public class ApplicationUser : IdentityUser
+  {
+      public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
+      public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+      public virtual ICollection<IdentityUserToken<string>> Tokens { get; set; }
+      public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+  }
+  ```
 * Customize the user store
   * [IUserStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserstore-1) (required)
   * Optional:
