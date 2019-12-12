@@ -96,18 +96,71 @@ Date: 12.12.2019
   }
   ```
 
+## Diagrams
+* Customize the user class  
+  ![user diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image2.png)  
+  ``` csharp
+  public class IdentityUser : IUser<int>
+  {
+      public IdentityUser() { ... }
+      public IdentityUser(string userName) { ... }
+      public int Id { get; set; }
+      public string UserName { get; set; }
+      // can also define optional properties such as:
+      //    PasswordHash
+      //    SecurityStamp
+      //    Claims
+      //    Logins
+      //    Roles
+  }
+  ```  
+* Customize the user store  
+  ![user store diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image3.png)  
+  ![interfaces available for implementation](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image4.png)  
+  ``` csharp
+  public class UserStore : IUserStore<IdentityUser, int>
+  {
+      public UserStore() { ... }
+      public UserStore(ExampleStorage database) { ... }
+      public Task CreateAsync(IdentityUser user) { ... }
+      public Task DeleteAsync(IdentityUser user) { ... }
+      public Task<IdentityUser> FindByIdAsync(int userId) { ... }
+      public Task<IdentityUser> FindByNameAsync(string userName) { ... }
+      public Task UpdateAsync(IdentityUser user) { ... }
+      public void Dispose() { ... }
+  }
+  ```  
+* Customize the role class  
+  ![role diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image5.png)  
+  ``` csharp
+  public class IdentityRole : IRole<int>
+  {
+      public IdentityRole() { ... }
+      public IdentityRole(string roleName) { ... }
+      public int Id { get; set; }
+      public string Name { get; set; }
+  }
+  ```  
+* Customize the role store  
+  ![role store diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image6.png)  
+  ``` csharp
+  public class RoleStore : IRoleStore<IdentityRole, int>
+  {
+      public RoleStore() { ... }
+      public RoleStore(ExampleStorage database) { ... }
+      public Task CreateAsync(IdentityRole role) { ... }
+      public Task DeleteAsync(IdentityRole role) { ... }
+      public Task<IdentityRole> FindByIdAsync(int roleId) { ... }
+      public Task<IdentityRole> FindByNameAsync(string roleName) { ... }
+      public Task UpdateAsync(IdentityRole role) { ... }
+      public void Dispose() { ... }
+  }
+  ```  
 
-
-
-
-
-
-
-
-
-
-
-
+## Literature
+* [Custom storage providers for ASP.NET Core Identity](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity-custom-storage-providers?view=aspnetcore-3.0)
+* [Overview of Custom Storage Providers for ASP.NET Identity](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity)
+* [Implementing a Custom MySQL ASP.NET Identity Storage Provider](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/implementing-a-custom-mysql-aspnet-identity-storage-provider)
 
 
 
