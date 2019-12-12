@@ -26,10 +26,10 @@ Date: 12.12.2019
 ## When customizing Identity
 * Customize the user class
   ``` csharp
-      public class ApplicationUser : IdentityUser<Guid>
-      {
-          public string CustomTag { get; set; }
-      }  
+  public class ApplicationUser : IdentityUser<Guid>
+  {
+      public string CustomTag { get; set; }
+  }  
   ```
   ``` csharp
   public class ApplicationUser : IdentityUser
@@ -69,6 +69,12 @@ Date: 12.12.2019
   }
   ```
 * Customize the role class
+  ``` csharp
+  public class ApplicationRole : IdentityRole<Guid>
+  {
+      public string Description { get; set; }
+  }
+  ```
 * Customize the role store
   * [IRoleStore<TRole>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.irolestore-1)
 * Reconfigure app to use a new storage provider
