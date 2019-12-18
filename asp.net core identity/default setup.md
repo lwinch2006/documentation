@@ -30,6 +30,7 @@ public void ConfigureServices(IServiceCollection services)
     })
     // Another usefull functions to call further
     .AddIdentityCookies()
+    .AddCookie()
 }
 ```
 
