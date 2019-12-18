@@ -44,7 +44,8 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-
+## Literature
+1. [Configure Identity services](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-3.0&tabs=visual-studio#configure-identity-services)
 
 
 
