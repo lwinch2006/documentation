@@ -47,15 +47,23 @@ public class UserStore : IUserStore<ApplicationUser>
 #### Role store
 ![diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image6.png)
 ``` csharp
-public class RoleStore : IRoleStore<ApplicationRole>
+public class ApplicationRoleStore : IRoleStore<ApplicationRole>
 {
     ...
 }
 ```
 
 ### Customize Startup class
+``` csharp
+services
+    .AddIdentityCore<ApplicationUser>()
+    .AddUserStore<ApplicationUserStore>()
+    .AddRoleStore<ApplicationRoleStore>()
+```
 
-
-
+## Literature
+1. [Custom storage providers for ASP.NET Core Identity](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity-custom-storage-providers?view=aspnetcore-3.0)
+2. [Overview of Custom Storage Providers for ASP.NET Identity](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity)
+3. [Implementing a Custom MySQL ASP.NET Identity Storage Provider](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/implementing-a-custom-mysql-aspnet-identity-storage-provider)
 
 
