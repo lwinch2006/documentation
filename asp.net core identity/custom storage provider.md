@@ -35,7 +35,7 @@ public class ApplicationRole : IdentityRole<int>
 #### User store
 * Interfaces  
 ![diagram 1](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image3.png)
-* Interfaces in details  
+* Interfaces in details ([link](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity#interfaces-to-implement-when-customizing-user-store))  
 ![diagram 2](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image4.png)
 ``` csharp
 public class UserStore : IUserStore<ApplicationUser>
