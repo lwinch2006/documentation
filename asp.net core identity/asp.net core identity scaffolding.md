@@ -1,166 +1,37 @@
-# ASP.NET Core Identity
-Date: 12.12.2019
+# Scaffold Identity in ASP.NET Core projects
 
-* Is an API that supports user interface (UI) login functionality.  
-* Manages users, passwords, profile data, roles, claims, tokens, email confirmation, and more.  
+1. Install generator
+``` Shell
+dotnet tool install -g dotnet-aspnet-codegenerator
+```  
+  
+2. Add NuGet package to the project
+``` Shell
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet restore
+```  
+  
+3. Run command to see all available options
+``` Shell
+dotnet aspnet-codegenerator identity -h
+```
+  
+4. Run the following command to generate all files with given DbContext and SQLite as database
+``` Shell
+dotnet aspnet-codegenerator identity -dc Dka.AspNetCore.TestingAuthentication.Data.ApplicationDbContext -sqlite
+```
 
-## Architecture
-![architecture](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity-custom-storage-providers/_static/identity-architecture-diagram.png?view=aspnetcore-3.0)
+## FAQ
+### Why Asp.Net Core 2.1 Identity Use Razor Pages ([link](https://stackoverflow.com/questions/53301538/why-asp-net-core-2-1-identity-use-razor-pages))?
 
-## Model classes
-* [IdentityUser](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuser?view=aspnetcore-3.0)
-* [IdentityRole](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityrole?view=aspnetcore-3.0)
-* [IdentityUserClaim](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserclaim-1?view=aspnetcore-3.0)
-* [IdentityUserToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityusertoken-1?view=aspnetcore-3.0)
-* [IdentityUserLogin](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserlogin-1?view=aspnetcore-3.0)
-* [IdentityRoleClaim](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityroleclaim-1?view=aspnetcore-3.0)
-* [IdentityUserRole](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityuserrole-1?view=aspnetcore-3.0)
+The only current option also seems to be using Razor Pages for the Identity UI. Some of us want full control over how we use Identity so that we can customize it to our needs. The current setup is simply unacceptable. If my entire project is using MVC, I don't want Identity living in its own folder off in la-la land as Razor Pages. It makes the project structure a mess, and there's just no reason for it.  
 
-## Store interfaces (aka service layer)
-* [IUserStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserstore-1?view=aspnetcore-3.0)
-* [IRoleStore<TRole>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.irolestore-1?view=aspnetcore-3.0)
-* [IUserClaimStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserclaimstore-1?view=aspnetcore-3.0)
-* [IUserLoginStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserloginstore-1?view=aspnetcore-3.0)
-* [IUserRoleStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserrolestore-1?view=aspnetcore-3.0)
+Maintaining two versions of the same codebase (MVC and Razor Pages) is very expensive for us and there are no real benefits from having an MVC implementation compared to a Razor Pages version. Both flavors are fully in ASP.NET. Moving the code out of the area should be relatively straight forward, as well as converting it to MVC from Razor Pages. It probably simply involves moving the pages from the area into your main app Pages folder and calling AddIdentity instead of AddDefaultIdentity.  
 
-## When customizing Identity
-* Customize the user class
-  ``` csharp
-  public class ApplicationUser : IdentityUser<Guid>
-  {
-      public string CustomTag { get; set; }
-  }  
-  ```
-  ``` csharp
-  public class ApplicationUser : IdentityUser
-  {
-      public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
-      public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
-      public virtual ICollection<IdentityUserToken<string>> Tokens { get; set; }
-      public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
-  }
-  ```
-* Customize the user store
-  * [IUserStore<TUser>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserstore-1) (required)
-  * Optional:
-    * [IUserRoleStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserrolestore-1)
-    * [IUserClaimStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserclaimstore-1)
-    * [IUserPasswordStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserpasswordstore-1)
-    * [IUserSecurityStampStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iusersecuritystampstore-1)
-    * [IUserEmailStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuseremailstore-1)
-    * [IUserPhoneNumberStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserphonenumberstore-1)
-    * [IQueryableUserStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iqueryableuserstore-1)
-    * [IUserLoginStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserloginstore-1)
-    * [IUserTwoFactorStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iusertwofactorstore-1)
-    * [IUserLockoutStore](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.iuserlockoutstore-1)
+Please either fix the options so that those who want it can take full control of Identity and use it as they wish, whether that's the MVC approach or the Razor Pages approach. Or provide us with sufficient documentation so that we may add Identity to a blank project without using the Identity UI library or some magic scaffolding voodoo. As it stands now, there doesn't appear to be any documentation on Identity that doesn't rely on the new scaffolding system and Identity UI.  
 
+The default UI is completely optional. You should be able to just scaffold the pages into your project and do whatever you want from there, whether that's convert them to an MVC flavor or move them out of the area into your main project.  
 
-
-  Implement only those interfaces that needed:
-  ``` csharp
-  public class UserStore : IUserStore<IdentityUser>,
-                           IUserClaimStore<IdentityUser>,
-                           IUserLoginStore<IdentityUser>,
-                           IUserRoleStore<IdentityUser>,
-                           IUserPasswordStore<IdentityUser>,
-                           IUserSecurityStampStore<IdentityUser>
-  {
-      // interface implementations not shown
-  }
-  ```
-* Customize the role class
-  ``` csharp
-  public class ApplicationRole : IdentityRole<Guid>
-  {
-      public string Description { get; set; }
-  }
-  ```
-* Customize the role store
-  * [IRoleStore<TRole>](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.irolestore-1)
-* Reconfigure app to use a new storage provider
-  ``` csharp
-  public void ConfigureServices(IServiceCollection services)
-  {
-      // Add identity types
-      services.AddIdentity<ApplicationUser, ApplicationRole>()
-          .AddDefaultTokenProviders();
-
-      // Identity Services
-      services.AddTransient<IUserStore<ApplicationUser>, CustomUserStore>();
-      services.AddTransient<IRoleStore<ApplicationRole>, CustomRoleStore>();
-      string connectionString = Configuration.GetConnectionString("DefaultConnection");
-      services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
-      services.AddTransient<DapperUsersTable>();
-
-      // additional configuration
-  }
-  ```
-
-## Diagrams
-* Customize the user class  
-  ![user diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image2.png)  
-  ``` csharp
-  public class IdentityUser : IUser<int>
-  {
-      public IdentityUser() { ... }
-      public IdentityUser(string userName) { ... }
-      public int Id { get; set; }
-      public string UserName { get; set; }
-      // can also define optional properties such as:
-      //    PasswordHash
-      //    SecurityStamp
-      //    Claims
-      //    Logins
-      //    Roles
-  }
-  ```  
-* Customize the user store  
-  ![user store diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image3.png)  
-  ![interfaces available for implementation](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image4.png)  
-  ``` csharp
-  public class UserStore : IUserStore<IdentityUser, int>
-  {
-      public UserStore() { ... }
-      public UserStore(ExampleStorage database) { ... }
-      public Task CreateAsync(IdentityUser user) { ... }
-      public Task DeleteAsync(IdentityUser user) { ... }
-      public Task<IdentityUser> FindByIdAsync(int userId) { ... }
-      public Task<IdentityUser> FindByNameAsync(string userName) { ... }
-      public Task UpdateAsync(IdentityUser user) { ... }
-      public void Dispose() { ... }
-  }
-  ```  
-* Customize the role class  
-  ![role diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image5.png)  
-  ``` csharp
-  public class IdentityRole : IRole<int>
-  {
-      public IdentityRole() { ... }
-      public IdentityRole(string roleName) { ... }
-      public int Id { get; set; }
-      public string Name { get; set; }
-  }
-  ```  
-* Customize the role store  
-  ![role store diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image6.png)  
-  ``` csharp
-  public class RoleStore : IRoleStore<IdentityRole, int>
-  {
-      public RoleStore() { ... }
-      public RoleStore(ExampleStorage database) { ... }
-      public Task CreateAsync(IdentityRole role) { ... }
-      public Task DeleteAsync(IdentityRole role) { ... }
-      public Task<IdentityRole> FindByIdAsync(int roleId) { ... }
-      public Task<IdentityRole> FindByNameAsync(string roleName) { ... }
-      public Task UpdateAsync(IdentityRole role) { ... }
-      public void Dispose() { ... }
-  }
-  ```  
-
-## Literature
-* [Custom storage providers for ASP.NET Core Identity](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity-custom-storage-providers?view=aspnetcore-3.0)
-* [Overview of Custom Storage Providers for ASP.NET Identity](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity)
-* [Implementing a Custom MySQL ASP.NET Identity Storage Provider](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/implementing-a-custom-mysql-aspnet-identity-storage-provider)
 
 
 
