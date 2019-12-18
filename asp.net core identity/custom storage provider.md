@@ -45,6 +45,13 @@ public class UserStore : IUserStore<ApplicationUser>
 ```
 
 #### Role store
+![diagram](https://docs.microsoft.com/en-us/aspnet/identity/overview/extensibility/overview-of-custom-storage-providers-for-aspnet-identity/_static/image6.png)
+``` csharp
+public class RoleStore : IRoleStore<ApplicationRole>
+{
+    ...
+}
+```
 
 ### Customize Startup class
 
