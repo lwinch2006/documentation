@@ -16,6 +16,21 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
+## Define claims checks with values in `Startup` class
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+    services.AddRazorPages();
+
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("Founders", policy =>
+                          policy.RequireClaim("EmployeeNumber", "1", "2", "3", "4", "5"));
+    });
+}
+```
+
 ## Use policy with claims checks in `Authorize` attribute
 ```csharp
 [Authorize(Policy = "EmployeeOnly")]
