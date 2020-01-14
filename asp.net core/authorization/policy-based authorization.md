@@ -16,6 +16,20 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+    services.AddRazorPages();
+
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("ElevatedRights", policy =>
+            policy.RequireRole("Administrator", "PowerUser", "BackupAdministrator"));
+    });
+}
+```
+
 ## Use policy name in `Authorize` attribute
 ```csharp
 [Authorize(Policy = "RequireAdministratorRole")]
