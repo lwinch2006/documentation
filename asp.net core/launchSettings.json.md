@@ -54,7 +54,7 @@ Date: 27.01.2020
 ```
 
 ## AspNetCoreHostingModel setting in csproj file
-![hosting table of web application depending on CommandName and AspNetCoreHostingModel](images/test.png)
+![hosting table of web application depending on CommandName and AspNetCoreHostingModel](images/c-users-pranaya-pictures-compressed-internal-and.png)
 
 ## Literature:
 1. [Scheme](http://json.schemastore.org/launchsettings)
