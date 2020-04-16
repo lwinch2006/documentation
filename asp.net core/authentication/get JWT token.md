@@ -2,7 +2,6 @@
 Date: 16.04.2020  
 
 Чтобы получить Bearer token, нужно:
-
 * отправить запрос на "[root url]/connect/token"
 * в запросе указать
   * Address ( aka "[root url]/connect/token")
