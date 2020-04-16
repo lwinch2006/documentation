@@ -1,9 +1,0 @@
-# Azure WebJob
-
-
-
-
-
-
-
-
