@@ -59,7 +59,7 @@ public class SupportForTenantAuthorizationHandler : AuthorizationHandler<Operati
   }).AddRazorRuntimeCompilation();
 ```
 
-## Add authorization hadnlers to services
+## Add authorization handlers to services
 ```csharp
   services.AddSingleton<IAuthorizationHandler, AdministratorForTenantAuthorizationHandler>();
   services.AddSingleton<IAuthorizationHandler, SupportForTenantAuthorizationHandler>();
