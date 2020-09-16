@@ -1,5 +1,5 @@
 # Trimming
-Date: 14.09.2020
+Date: 16.09.2020
 
 ## What is trimming
 To resolve the size problem, we introduced an option to trim unused assemblies as part of publishing self-contained applications.
