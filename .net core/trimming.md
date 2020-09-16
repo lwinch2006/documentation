@@ -21,13 +21,17 @@ To resolve the size problem, we introduced an option to trim unused assemblies a
 `TrimMode=Link` in the project file
 
 ## Dynamic code pattern analysis
-...
+A set of attributes have been added that enables code to be annotated to tell the trimmer what code should be included, or which API usage should prevent trimming.
+* DynamicallyAccessedMembers - Applied to instances of System.Type (or strings containing a type name) to tell the trimmer which members of the type will be accessed dynamically.
+* UnconditionalSuppressMessage - Used to suppress a warning message from the trimmer if the use case is known to be safe.
+* RequiresUnreferencedCode - Tells the trimmer that the method is incompatible with trimming and so warnings should be presented where the method is called.
+* DynamicDependency - Specifies an explicit dependency from a method to other code, if the method is preserved the other code will also be preserved.
 
 ## Testing Trimmed Apps
-...
+When an app is trimmed, it is essential to perform exhaustive end-to-end testing of the published version of the application.
 
 ## Trimming and Ready2Run
-...
+Using `<TrimMode>Link</TrimMode>` will remove R2R data, unless its specified to be added by using the `<PublishReadyToRun>True</PublishReadyToRun>` option as part of dotnet publish.
 
 ## Making .NET Trimmable
 ...
