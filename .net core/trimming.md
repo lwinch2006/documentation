@@ -1,5 +1,5 @@
 # Trimming
-Date: 16.09.2020
+Date: 18.09.2020
 
 ## What is trimming
 To resolve the size problem, we introduced an option to trim unused assemblies as part of publishing self-contained applications.
@@ -33,14 +33,8 @@ When an app is trimmed, it is essential to perform exhaustive end-to-end testing
 ## Trimming and Ready2Run
 Using `<TrimMode>Link</TrimMode>` will remove R2R data, unless its specified to be added by using the `<PublishReadyToRun>True</PublishReadyToRun>` option as part of dotnet publish.
 
-## Making .NET Trimmable
-...
-
 ## Removing Framework Features
-...
-
-## Blazor Web Assemblies
-...
+Based on [feature switches](https://github.com/dotnet/runtime/blob/master/docs/workflow/trimming/feature-switches.md#available-feature-switches).
 
 ## Using attributes to provide hints to the trimmer
 ### Annotating Reflection
