@@ -135,6 +135,12 @@
     
   - Remove non-existent remote branch references in your local repository
     git remote prune origin  
+    
+  - Remove commited file from tracking (from Git)
+    git rm --cached <file>
+    
+  - Remove commited folder from tracking (from Git)
+    git rm -r --cached <folder>    
 ```
 
 ## Notepad++ environment variables
