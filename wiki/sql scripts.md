@@ -1,5 +1,25 @@
 # Useful SQL scripts
 
+## Create table with primary key, index on it and eventual foreign key
+```sql
+    CREATE TABLE Shops
+    (    
+        Id UNIQUEIDENTIFIER NOT NULL,
+        Name NVARCHAR(250) NOT NULL,
+        CONSTRAINT PK_Shop PRIMARY KEY (Id)        
+    );
+
+    CREATE TABLE Products
+    (
+        Id UNIQUEIDENTIFIER NOT NULL,
+        ShopId UNIQUEIDENTIFIER NOT NULL,
+        Name NVARCHAR(250) NOT NULL,
+        CONSTRAINT PK_Product PRIMARY KEY (Id),
+        CONSTRAINT FK_ShopProduct FOREIGN KEY (ShopId)
+        REFERENCES Shops(Id)        
+    );
+```
+
 ## Get datatype of the column
 ``` sql
     SELECT @ApplicationId_Column_Datatype = DATA_TYPE 
