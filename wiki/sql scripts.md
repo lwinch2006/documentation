@@ -104,6 +104,35 @@
     WITH VALUES
 ```
 
+## Constraints - find default value constraint
+``` sql
+    SELECT [df].[name]
+    FROM
+        sys.default_constraints [df] INNER JOIN sys.columns [col] ON [df].[parent_object_id] = [col].[object_id]
+        INNER JOIN sys.tables [t] ON [df].[parent_object_id] = [t].[object_id]
+    WHERE [col].[column_id] = [df].[parent_column_id]
+    AND [t].[name] = '[Table name]'
+    AND [col].[name] = '[Column name]'
+```
+
+## Constraints - remove default value constraint
+``` sql
+    DECLARE @DFConstraintName VARCHAR(255);
+    DECLARE @DropConstraintCommand VARCHAR(max);
+
+    SELECT @DFConstraintName = [df].[name]
+    FROM
+        sys.default_constraints [df] INNER JOIN sys.columns [col] ON [df].[parent_object_id] = [col].[object_id]
+        INNER JOIN sys.tables [t] ON [df].[parent_object_id] = [t].[object_id]
+    WHERE [col].[column_id] = [df].[parent_column_id]
+    AND [t].[name] = '[Table name]'
+    AND [col].[name] = '[Column name]'
+
+    SELECT @DropConstraintCommand = 'ALTER TABLE [Table name] DROP CONSTRAINT ' + @DFConstraintName;
+
+    EXECUTE (@DropConstraintCommand);
+```
+
 ## Dynamic script execution
 ``` sql
     SET @newReason = 'Call'
