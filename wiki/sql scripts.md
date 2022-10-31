@@ -166,6 +166,42 @@
     EXEC sp_rename 'PK_PersonnelSignInReasons_new', 'PK_PersonnelSignInReasons', 'object'
 ```
 
+## Using cursor for loop-ing through dataset
+```sql
+    -- Declaring variables for for-loop
+    DECLARE @ReadTenantId UNIQUEIDENTIFIER;
+    DECLARE @ReadUserId UNIQUEIDENTIFIER;
+
+    -- Declaring for-loop with base query
+    DECLARE TenantUsersCursor CURSOR FOR 
+        SELECT [TenantId], [UserId] 
+        FROM [TenantUsers] 
+
+    -- Starting for-loop
+    OPEN TenantUsersCursor
+
+    -- Fetching new data into defined variables
+    FETCH NEXT FROM TenantUsersCursor
+    INTO @ReadTenantId, @ReadUserId
+
+    -- Loop-ing while data available
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Doing some operation based on variables fetched 
+        SELECT CONCAT([TenantId], ' - ', [UserId])
+        FROM [TenantUsers]
+        WHERE [TenantId] = @ReadTenantId AND [UserId] = @ReadUserId
+
+        -- Fetching new data into defined variables
+        FETCH NEXT FROM TenantUsersCursor
+        INTO @ReadTenantId, @ReadUserId
+    END
+
+    -- Closing and deallocating for-loop
+    CLOSE TenantUsersCursor;  
+    DEALLOCATE TenantUsersCursor; 
+```
+
 ## Template for each SQL script
 ``` sql
     BEGIN TRY
