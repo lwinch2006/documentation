@@ -94,7 +94,7 @@
 ``` sql
     ALTER TABLE [Tenants]
     ADD CreatedOnUtc DATETIME,
-    UpdatedOnUtc DATETIME;
+        UpdatedOnUtc DATETIME;
 ```
 
 ## Change table - add columns with defaul values
