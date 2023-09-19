@@ -134,6 +134,29 @@
     EXECUTE (@DropConstraintCommand);
 ```
 
+## Constraints - remove unique value constraint
+``` sql
+    DECLARE @ConstraintName VARCHAR(255)
+    DECLARE @TableName VARCHAR(15) = 'TableName'
+    DECLARE @ColumnName VARCHAR(15) = 'ColumnName'
+    
+    SELECT @ConstraintName = [ccu].[CONSTRAINT_NAME]
+    FROM [INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] [ccu] 
+    INNER JOIN [INFORMATION_SCHEMA].[TABLE_CONSTRAINTS] [tc] ON [ccu].[CONSTRAINT_NAME] = [tc].[CONSTRAINT_NAME] 
+    AND [ccu].[TABLE_NAME] = @TableName 
+    AND [ccu].[COLUMN_NAME] = @ColumnName 
+    AND [tc].[CONSTRAINT_TYPE] = 'Unique'
+    
+    IF @ConstraintName IS NOT NULL
+    BEGIN
+        DECLARE @DropConstraintCommand VARCHAR(500)
+    
+        SELECT @DropConstraintCommand = 'ALTER TABLE [' + @TableName + '] DROP CONSTRAINT ' + @ConstraintName;
+    
+        EXECUTE (@DropConstraintCommand);
+    END
+```
+
 ## Dynamic script execution
 ``` sql
     SET @newReason = 'Call'
