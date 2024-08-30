@@ -93,7 +93,8 @@
 ## Change table - add columns
 ``` sql
     ALTER TABLE [Tenants]
-    ADD CreatedOnUtc DATETIME;
+    ADD CreatedOnUtc DATETIME,
+        UpdatedOnUtc DATETIME;
 ```
 
 ## Change table - add columns with defaul values
@@ -102,6 +103,58 @@
     ADD {COLUMNNAME} {TYPE} {NULL|NOT NULL} 
     CONSTRAINT {CONSTRAINT_NAME} DEFAULT {DEFAULT_VALUE}
     WITH VALUES
+```
+
+## Constraints - find default value constraint
+``` sql
+    SELECT [df].[name]
+    FROM
+        sys.default_constraints [df] INNER JOIN sys.columns [col] ON [df].[parent_object_id] = [col].[object_id]
+        INNER JOIN sys.tables [t] ON [df].[parent_object_id] = [t].[object_id]
+    WHERE [col].[column_id] = [df].[parent_column_id]
+    AND [t].[name] = '[Table name]'
+    AND [col].[name] = '[Column name]'
+```
+
+## Constraints - remove default value constraint
+``` sql
+    DECLARE @DFConstraintName VARCHAR(255);
+    DECLARE @DropConstraintCommand VARCHAR(max);
+
+    SELECT @DFConstraintName = [df].[name]
+    FROM
+        sys.default_constraints [df] INNER JOIN sys.columns [col] ON [df].[parent_object_id] = [col].[object_id]
+        INNER JOIN sys.tables [t] ON [df].[parent_object_id] = [t].[object_id]
+    WHERE [col].[column_id] = [df].[parent_column_id]
+    AND [t].[name] = '[Table name]'
+    AND [col].[name] = '[Column name]'
+
+    SELECT @DropConstraintCommand = 'ALTER TABLE [Table name] DROP CONSTRAINT ' + @DFConstraintName;
+
+    EXECUTE (@DropConstraintCommand);
+```
+
+## Constraints - remove unique value constraint
+``` sql
+    DECLARE @ConstraintName VARCHAR(255)
+    DECLARE @TableName VARCHAR(15) = 'TableName'
+    DECLARE @ColumnName VARCHAR(15) = 'ColumnName'
+    
+    SELECT @ConstraintName = [ccu].[CONSTRAINT_NAME]
+    FROM [INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] [ccu] 
+    INNER JOIN [INFORMATION_SCHEMA].[TABLE_CONSTRAINTS] [tc] ON [ccu].[CONSTRAINT_NAME] = [tc].[CONSTRAINT_NAME] 
+    AND [ccu].[TABLE_NAME] = @TableName 
+    AND [ccu].[COLUMN_NAME] = @ColumnName 
+    AND [tc].[CONSTRAINT_TYPE] = 'Unique'
+    
+    IF @ConstraintName IS NOT NULL
+    BEGIN
+        DECLARE @DropConstraintCommand VARCHAR(500)
+    
+        SELECT @DropConstraintCommand = 'ALTER TABLE [' + @TableName + '] DROP CONSTRAINT ' + @ConstraintName;
+    
+        EXECUTE (@DropConstraintCommand);
+    END
 ```
 
 ## Dynamic script execution
@@ -135,6 +188,42 @@
 
     -- Renaming constraint
     EXEC sp_rename 'PK_PersonnelSignInReasons_new', 'PK_PersonnelSignInReasons', 'object'
+```
+
+## Using cursor for loop-ing through dataset
+```sql
+    -- Declaring variables for for-loop
+    DECLARE @ReadTenantId UNIQUEIDENTIFIER;
+    DECLARE @ReadUserId UNIQUEIDENTIFIER;
+
+    -- Declaring for-loop with base query
+    DECLARE TenantUsersCursor CURSOR FOR 
+        SELECT [TenantId], [UserId] 
+        FROM [TenantUsers] 
+
+    -- Starting for-loop
+    OPEN TenantUsersCursor
+
+    -- Fetching new data into defined variables
+    FETCH NEXT FROM TenantUsersCursor
+    INTO @ReadTenantId, @ReadUserId
+
+    -- Loop-ing while data available
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Doing some operation based on variables fetched 
+        SELECT CONCAT([TenantId], ' - ', [UserId])
+        FROM [TenantUsers]
+        WHERE [TenantId] = @ReadTenantId AND [UserId] = @ReadUserId
+
+        -- Fetching new data into defined variables
+        FETCH NEXT FROM TenantUsersCursor
+        INTO @ReadTenantId, @ReadUserId
+    END
+
+    -- Closing and deallocating for-loop
+    CLOSE TenantUsersCursor;  
+    DEALLOCATE TenantUsersCursor; 
 ```
 
 ## Template for each SQL script
