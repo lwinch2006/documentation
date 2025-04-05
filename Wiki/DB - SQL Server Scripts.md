@@ -1,4 +1,4 @@
-# Useful SQL scripts
+# Useful SQL Server scripts
 
 ## Create table with primary key, index on it and eventual foreign key
 ```sql

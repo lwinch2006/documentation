@@ -330,7 +330,8 @@ ASALocalRun/
 .mfractor/
 
 # Misc folders and files
-.DS_Store 
+.DS_Store
+.obsidian
 
 
 
